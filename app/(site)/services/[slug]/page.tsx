@@ -27,7 +27,6 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
   if (!service) notFound();
   const category = SERVICE_CATEGORIES.find((item) => item.id === service.category);
   const related = byOrder(db.services).filter((item) => item.visible && item.slug !== service.slug && (service.related.includes(item.slug) || item.category === service.category)).slice(0, 3);
-  const results = byOrder(db.results).filter((item) => item.serviceSlug === service.slug);
   const reviews = db.reviews.filter((review) => review.status === "approved" && review.service.toLowerCase() === service.title.toLowerCase()).slice(0, 2);
   const s = db.settings;
   const isRoom = service.rooms > 0;
