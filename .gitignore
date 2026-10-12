@@ -1,0 +1,12 @@
+node_modules
+.next
+out
+.env
+.env.local
+.env*.local
+data/db.json
+public/uploads/*
+!public/uploads/.gitkeep
+cloned
+*.log
+tsconfig.tsbuildinfo

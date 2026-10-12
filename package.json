@@ -1,0 +1,49 @@
+{
+  "name": "harbour-view-resort",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Harbour View Resort Darwin website and admin panel.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "test": "tsx --test lib/*.test.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@hookform/resolvers": "^5.9.1",
+    "@radix-ui/react-dialog": "^1.2.0",
+    "@radix-ui/react-label": "^2.1.16",
+    "@radix-ui/react-slot": "^1.4.0",
+    "@supabase/ssr": "^0.12.7",
+    "@supabase/supabase-js": "^2.117.3",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "jose": "^6.2.12",
+    "lucide-react": "^1.54.0",
+    "next": "^15.5.27",
+    "nodemailer": "^7.0.13",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "react-hook-form": "^7.89.0",
+    "resend": "^6.32.1",
+    "tailwind-merge": "^3.7.0",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.4",
+    "@types/nodemailer": "^8.0.2",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "autoprefixer": "^10.6.1",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^15.5.27",
+    "postcss": "^8.5.29",
+    "tailwindcss": "^3.4.17",
+    "tsx": "^4.23.15",
+    "typescript": "^6.0.3"
+  }
+}

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="Harbour View Resort">
+  <circle cx="60" cy="60" r="58" fill="#0E1E26"/>
+  <circle cx="60" cy="60" r="52" fill="none" stroke="#C9A46A" stroke-width="1.5"/>
+  <path d="M30 64a30 30 0 0 1 60 0" fill="#C9A46A"/>
+  <g stroke="#C9A46A" stroke-width="2" stroke-linecap="round" opacity=".9">
+    <path d="M60 22v8M38 31l5 6M82 31l-5 6M26 50l7 3M94 50l-7 3"/>
+  </g>
+  <g fill="none" stroke="#E9D4A8" stroke-width="3" stroke-linecap="round">
+    <path d="M26 72c6-4 11-4 17 0s11 4 17 0 11-4 17 0 11 4 17 0"/>
+    <path d="M32 82c5-3.5 9.5-3.5 14 0s9.5 3.5 14 0 9.5-3.5 14 0 9.5 3.5 14 0"/>
+    <path d="M40 92c4-3 8-3 12 0s8 3 12 0 8-3 12 0"/>
+  </g>
+</svg>
