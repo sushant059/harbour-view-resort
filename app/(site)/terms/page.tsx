@@ -12,7 +12,7 @@ export default async function TermsPage() {
   const { settings } = await getDb();
   return (
     <>
-      <PageHero image={STOCK.pool} eyebrow="Terms" title="Booking terms" lede={`These terms cover booking requests and stays at ${settings.businessName}. They sit alongside the Australian Consumer Law.`} />
+      <PageHero compact image={STOCK.pool} eyebrow="Terms" title="Booking terms" lede={`These terms cover booking requests and stays at ${settings.businessName}. They sit alongside the Australian Consumer Law.`} />
       <section className="section pt-12">
         <div className="container-x card max-w-3xl space-y-4 p-6 text-slate md:p-10">
           <p>A request sent through the website, chat or phone holds your room while our team confirms it. It becomes a booking when we confirm the room, dates and rate with you. A reference number is not a tax invoice.</p>

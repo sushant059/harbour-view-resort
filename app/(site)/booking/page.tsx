@@ -19,7 +19,7 @@ export default async function BookingPage({ searchParams }: { searchParams: Prom
   const initialService = db.services.some((item) => item.slug === params.service && item.visible) ? params.service : "";
   return (
     <>
-      <PageHero image={STOCK.room} eyebrow="Reservations" title="Book your stay." lede="Choose your dates to see live availability for every room. Nothing is charged until our team confirms your booking with you." crumbs={[{ href: "/booking", label: "Book" }]}>
+      <PageHero compact image={STOCK.room} eyebrow="Reservations" title="Book your stay." lede="Choose your dates to see live availability for every room. Nothing is charged until our team confirms your booking with you." crumbs={[{ href: "/booking", label: "Book" }]}>
         <ul className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm font-semibold text-white/85">
           {["Best rate, guaranteed direct", "Free breakfast on 2+ nights", "Free cancellation up to 48 hours"].map((item) => <li key={item} className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-sky" aria-hidden /> {item}</li>)}
         </ul>

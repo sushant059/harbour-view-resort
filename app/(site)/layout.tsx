@@ -1,4 +1,8 @@
 import { RevealObserver } from "@/components/fade-in";
+import { Cursor } from "@/components/motion/cursor";
+import { Preloader } from "@/components/motion/preloader";
+import { ScrollProgress } from "@/components/motion/primitives";
+import { SmoothScroll } from "@/components/motion/smooth-scroll";
 import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
 import { OfferBanner } from "@/components/layout/offer-banner";
@@ -39,14 +43,21 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
   return (
     <>
       <a href="#content" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[90] focus:rounded-full focus:bg-white focus:px-4 focus:py-3 focus:text-navy">Skip to content</a>
-      <div className="sticky top-0 z-40">
+      <SmoothScroll>
+        <Preloader />
+        <ScrollProgress />
+        {/* Fixed over each page's full-bleed opening scene; it slides away as you read down. */}
+        <div className="fixed inset-x-0 top-0 z-40">
+          <Header settings={db.settings} services={services} />
+        </div>
+        <main id="content" className="pb-16 md:pb-0">{children}</main>
         {banner && <OfferBanner id={banner.id} text={banner.bannerText} href={banner.href || "/offers"} settings={db.settings} />}
-        <Header settings={db.settings} services={services} />
-      </div>
-      <main id="content" className="pb-16 md:pb-0">{children}</main>
-      <Footer settings={db.settings} services={db.services} />
-      <SiteWidgets settings={db.settings} services={services} />
-      <RevealObserver />
+        <Footer settings={db.settings} services={db.services} />
+        <SiteWidgets settings={db.settings} services={services} />
+        <RevealObserver />
+        <Cursor />
+        <div className="grain animate-grain" aria-hidden />
+      </SmoothScroll>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
     </>
   );

@@ -1,50 +1,25 @@
 import Link from "next/link";
-import { ArrowRight, BadgeCheck, Car, MapPin, ShieldCheck, Sparkles, Star, Sunset, ThumbsUp, UtensilsCrossed, Waves } from "lucide-react";
+import { ArrowRight, ArrowUpRight, BadgeCheck, Car, MapPin, ShieldCheck, Sparkles, Star, Sunset, ThumbsUp, UtensilsCrossed, Waves } from "lucide-react";
 import { Photo } from "@/components/photo";
 import { FadeIn } from "@/components/fade-in";
+import { Magnetic, SplitWords } from "@/components/motion/primitives";
+import { VelocityMarquee } from "@/components/motion/velocity-marquee";
 import { ServiceIcon } from "@/components/icons";
-import { Sparkle } from "@/components/art/sparkle";
 import { BrandIcon } from "@/components/social";
 import { SERVICE_CATEGORIES } from "@/lib/constants";
-import { categoryStock, serviceStock, STOCK, type StockImage } from "@/lib/stock";
+import { categoryStock, serviceStock, STOCK } from "@/lib/stock";
 import type { Faq, Review, Service, Settings } from "@/lib/types";
 import { cn, filled, formatDisplayDate, safeHttpUrl } from "@/lib/utils";
 
-export function PageHero({ eyebrow, title, lede, children, crumbs, image = STOCK.pool, src }: { eyebrow: string; title: string; lede: string; children?: React.ReactNode; crumbs?: { href: string; label: string }[]; image?: StockImage[]; src?: string }) {
-  return (
-    <header className="relative isolate overflow-hidden bg-navy-deep text-white">
-      <Photo src={src} stock={image} fill priority sizes="100vw" className="-z-20 animate-kenburns" />
-      <div className="absolute inset-0 -z-10 bg-gradient-to-r from-navy-deep via-navy-deep/85 to-navy/40" aria-hidden />
-      <div className="absolute inset-0 -z-10 bg-gradient-to-t from-navy-deep/80 via-transparent to-transparent" aria-hidden />
-      <Sparkle className="pointer-events-none absolute right-[8%] top-10 hidden h-10 w-10 text-sky md:block" animated />
-      <div className="container-x relative pb-20 pt-12 md:pb-32 md:pt-20">
-        {crumbs && (
-          <nav aria-label="Breadcrumb" className="mb-6 text-sm text-white/60">
-            <ol className="flex flex-wrap items-center gap-1.5">
-              <li><Link href="/" className="hover:text-white">Home</Link></li>
-              {crumbs.map((crumb) => (
-                <li key={crumb.href} className="flex items-center gap-1.5"><span aria-hidden>/</span><Link href={crumb.href} className="hover:text-white">{crumb.label}</Link></li>
-              ))}
-            </ol>
-          </nav>
-        )}
-        <p className="eyebrow text-sky"><Sparkle className="h-3 w-3" /> {eyebrow}</p>
-        <h1 className="mt-4 max-w-4xl font-display text-[40px] font-semibold leading-[1.04] md:text-6xl">{title}</h1>
-        <p className="mt-5 max-w-2xl text-lg text-white/75">{lede}</p>
-        {children}
-      </div>
-      <svg viewBox="0 0 1440 60" preserveAspectRatio="none" className="absolute -bottom-px left-0 h-8 w-full md:h-14" aria-hidden><path d="M0 60V30C240 0 480 0 720 22s480 30 720 0v38Z" fill="#fff" /></svg>
-    </header>
-  );
-}
+export { PageHero } from "@/components/page-hero";
 
 export function SectionHeading({ eyebrow, title, lede, align = "left", action }: { eyebrow: string; title: string; lede?: string; align?: "left" | "center"; action?: React.ReactNode }) {
   return (
     <div className={cn("flex flex-wrap items-end justify-between gap-6", align === "center" && "flex-col items-center text-center")}>
       <div className={cn(align === "center" && "flex flex-col items-center")}>
-        <p className="eyebrow"><Sparkle className="h-3 w-3 text-leaf" /> {eyebrow}</p>
-        <h2 className="h-section mt-3 max-w-3xl">{title}</h2>
-        {lede && <p className="lede">{lede}</p>}
+        <p className="eyebrow"><span className="h-px w-10 bg-brand" /> {eyebrow}</p>
+        <SplitWords text={title} className="h-section mt-5 max-w-4xl" />
+        {lede && <p className="lede" data-reveal>{lede}</p>}
       </div>
       {action}
     </div>
@@ -53,7 +28,7 @@ export function SectionHeading({ eyebrow, title, lede, align = "left", action }:
 
 export function Stars({ rating, className }: { rating: number; className?: string }) {
   return (
-    <span className={cn("inline-flex gap-0.5 text-sun", className)} role="img" aria-label={`${rating} out of 5 stars`}>
+    <span className={cn("inline-flex gap-0.5 text-brand", className)} role="img" aria-label={`${rating} out of 5 stars`}>
       {[1, 2, 3, 4, 5].map((value) => (
         <Star key={value} className={cn("h-4 w-4", value <= rating ? "fill-current" : "fill-transparent text-line")} aria-hidden />
       ))}
@@ -64,17 +39,18 @@ export function Stars({ rating, className }: { rating: number; className?: strin
 export function ReviewCard({ review, className }: { review: Review; className?: string }) {
   const initials = review.name.split(/\s+/).map((part) => part[0]).join("").slice(0, 2).toUpperCase();
   return (
-    <article className={cn("card flex h-full flex-col p-6", className)}>
+    <article className={cn("group relative flex h-full flex-col overflow-hidden rounded-[24px] border border-navy/10 bg-pearl p-7 transition duration-500 hover:-translate-y-1 hover:shadow-soft", className)}>
+      <span className="pointer-events-none absolute -right-2 -top-10 font-display text-[160px] leading-none text-brand/10 transition group-hover:text-brand/20" aria-hidden>“</span>
       <div className="flex items-center justify-between gap-3">
         <Stars rating={review.rating} />
         {review.source === "google" && <BrandIcon name="google" className="h-5 w-5 text-[#4285F4]" />}
       </div>
       {review.source === "sample" && <p className="mt-3 inline-flex w-fit rounded-full bg-sun-soft px-2.5 py-0.5 text-xs font-bold text-[#8A5A00]">Sample — replace with real reviews</p>}
-      <blockquote className="mt-4 flex-1 text-[17px] leading-relaxed text-ink">“{review.text}”</blockquote>
-      <footer className="mt-6 flex items-center gap-3 border-t border-line pt-4">
-        <span className="grid h-11 w-11 place-items-center rounded-full bg-brand-light font-display font-bold text-brand">{initials || "★"}</span>
+      <blockquote className="relative mt-5 flex-1 font-display text-2xl font-light leading-snug text-ink">“{review.text}”</blockquote>
+      <footer className="mt-6 flex items-center gap-3 border-t border-navy/10 pt-5">
+        <span className="grid h-11 w-11 place-items-center rounded-full bg-navy font-display text-lg italic text-sky">{initials || "★"}</span>
         <span className="min-w-0">
-          <span className="flex items-center gap-1.5 font-semibold text-navy">{review.name}{review.source === "customer" && <BadgeCheck className="h-4 w-4 text-leaf" aria-label="Verified customer" />}</span>
+          <span className="flex items-center gap-1.5 font-semibold text-navy">{review.name}{review.source === "customer" && <BadgeCheck className="h-4 w-4 text-brand" aria-label="Verified guest" />}</span>
           <span className="block truncate text-sm text-slate">{[review.service, review.suburb, review.date && formatDisplayDate(review.date)].filter(Boolean).join(" · ")}</span>
         </span>
       </footer>
@@ -102,34 +78,28 @@ const TRUST = [
 ] as const;
 
 export function TrustMarquee() {
-  const row = [...TRUST, ...TRUST];
   return (
-    <section className="overflow-hidden border-y border-line bg-mist py-4" aria-label="What you can expect">
-      <ul className="flex w-max animate-marquee gap-10 pr-10 hover:[animation-play-state:paused]">
-        {row.map(([Icon, label], index) => (
-          <li key={`${label}-${index}`} className="flex shrink-0 items-center gap-2.5 font-semibold text-navy" aria-hidden={index >= TRUST.length}>
-            <Icon className="h-5 w-5 text-leaf-dark" aria-hidden /> {label}
-            <Sparkle className="ml-8 h-3 w-3 text-sky" />
-          </li>
-        ))}
-      </ul>
+    <section className="border-y border-white/10 bg-navy-deep py-5 text-pearl" aria-label="What you can expect">
+      <ul className="sr-only">{TRUST.map(([, label]) => <li key={label}>{label}</li>)}</ul>
+      <VelocityMarquee items={TRUST.map(([, label]) => label)} baseVelocity={-1.6} className="font-display text-3xl font-light italic md:text-4xl" />
     </section>
   );
 }
 
 export function ServiceCard({ service, className }: { service: Service; className?: string }) {
   return (
-    <Link href={`/services/${service.slug}`} className={cn("group card flex h-full flex-col overflow-hidden transition duration-300 hover:-translate-y-1 hover:border-brand/40 hover:shadow-soft", className)}>
-      <div className="relative aspect-[4/3] overflow-hidden bg-mist">
-        <Photo src={service.image} stock={serviceStock(service.slug)} alt={service.title} fill sizes="(max-width: 640px) 85vw, (max-width: 1024px) 45vw, 30vw" className="transition duration-700 group-hover:scale-105" />
-        <div className="absolute inset-0 bg-gradient-to-t from-navy-deep/70 via-transparent to-transparent" aria-hidden />
-        <span className="absolute left-4 top-4 grid h-11 w-11 place-items-center rounded-2xl bg-white/95 text-brand shadow-card"><ServiceIcon name={service.icon} className="h-5 w-5" /></span>
-        {filled(service.priceFrom) && <span className="absolute bottom-4 left-4 rounded-full bg-leaf-dark px-3 py-1 text-sm font-bold text-white">From {service.priceFrom}</span>}
+    <Link href={`/services/${service.slug}`} data-cursor="View" className={cn("group flex h-full flex-col", className)}>
+      <div className="relative aspect-[4/5] overflow-hidden rounded-[22px] bg-navy">
+        <Photo src={service.image} stock={serviceStock(service.slug)} alt={service.title} fill sizes="(max-width: 640px) 85vw, (max-width: 1024px) 45vw, 30vw" className="transition duration-[1.4s] ease-out group-hover:scale-110" />
+        <div className="absolute inset-0 bg-gradient-to-t from-navy-deep/80 via-navy-deep/10 to-transparent" aria-hidden />
+        <span className="absolute right-4 top-4 grid h-12 w-12 place-items-center rounded-full border border-white/30 text-white backdrop-blur transition duration-500 group-hover:rotate-45 group-hover:border-sky group-hover:bg-sky group-hover:text-navy-deep"><ArrowUpRight className="h-5 w-5" aria-hidden /></span>
+        {filled(service.priceFrom) && <span className="absolute bottom-5 left-5 font-display text-2xl text-white">{service.priceFrom}</span>}
+        {service.maxGuests > 0 && <span className="absolute bottom-6 right-5 text-[11px] uppercase tracking-[0.24em] text-white/75">Sleeps {service.maxGuests}</span>}
       </div>
-      <div className="flex flex-1 flex-col p-5">
-        <h3 className="font-display text-xl font-bold text-navy">{service.title}</h3>
-        <p className="mt-2 line-clamp-3 flex-1 text-[15px] text-slate">{service.summary}</p>
-        <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-bold text-brand">View details <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" aria-hidden /></span>
+      <div className="flex flex-1 flex-col pt-5">
+        <h3 className="font-display text-3xl font-medium leading-none text-navy transition group-hover:text-brand">{service.title}</h3>
+        <p className="mt-3 line-clamp-3 flex-1 text-[15px] text-slate">{service.summary}</p>
+        <span className="relative mt-4 h-px w-full bg-navy/15"><span className="absolute inset-0 origin-left scale-x-0 bg-navy transition duration-700 group-hover:scale-x-100" /></span>
       </div>
     </Link>
   );
@@ -188,13 +158,14 @@ export function Pillars() {
     [MapPin, "Darwin at your door", "Walk to the Waterfront precinct; the city, markets and Mindil are minutes away."],
   ] as const;
   return (
-    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="grid gap-px overflow-hidden rounded-[26px] border border-navy/10 bg-navy/10 sm:grid-cols-2 lg:grid-cols-3">
       {items.map(([Icon, title, text], index) => (
-        <FadeIn key={title} delay={index * 60}>
-          <article className="h-full rounded-card border border-line bg-white p-6">
-            <span className="grid h-12 w-12 place-items-center rounded-full border border-leaf/50 text-brand"><Icon className="h-5 w-5" aria-hidden /></span>
-            <h3 className="mt-4 font-display text-xl font-semibold text-navy">{title}</h3>
-            <p className="mt-2 text-slate">{text}</p>
+        <FadeIn key={title} delay={index * 60} className="h-full">
+          <article className="group relative h-full overflow-hidden bg-pearl p-8 transition duration-500 hover:bg-navy">
+            <span className="absolute right-6 top-6 font-display text-sm italic text-brand transition group-hover:text-sky">{String(index + 1).padStart(2, "0")}</span>
+            <span className="grid h-14 w-14 place-items-center rounded-full border border-brand/40 text-brand transition duration-500 group-hover:rotate-[360deg] group-hover:border-sky group-hover:text-sky"><Icon className="h-5 w-5" aria-hidden /></span>
+            <h3 className="mt-8 font-display text-3xl font-medium text-navy transition group-hover:text-white">{title}</h3>
+            <p className="mt-3 text-slate transition group-hover:text-white/70">{text}</p>
           </article>
         </FadeIn>
       ))}
@@ -210,13 +181,14 @@ export function Steps({ tone = "light" }: { tone?: "light" | "dark" }) {
     ["Stay connected", "Message us any time on WhatsApp for transfers, tables and spa times."],
   ];
   return (
-    <ol className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+    <ol className="relative grid gap-10 md:grid-cols-2 lg:grid-cols-4 lg:gap-6">
+      <span className={cn("absolute left-0 right-0 top-[38px] hidden h-px lg:block", tone === "dark" ? "bg-white/15" : "bg-navy/15")} aria-hidden />
       {steps.map(([title, text], index) => (
-        <FadeIn key={title} delay={index * 80}>
-          <li className={cn("relative h-full rounded-card p-6", tone === "dark" ? "bg-white/[0.06] ring-1 ring-white/10" : "card")}>
-            <span className={cn("font-display text-5xl font-semibold italic", tone === "dark" ? "text-sky" : "text-brand/30")}>0{index + 1}</span>
-            <h3 className={cn("mt-3 font-display text-xl font-semibold", tone === "dark" ? "text-white" : "text-navy")}>{title}</h3>
-            <p className={cn("mt-2", tone === "dark" ? "text-white/70" : "text-slate")}>{text}</p>
+        <FadeIn key={title} delay={index * 120}>
+          <li className="relative">
+            <span className={cn("relative z-10 grid h-[76px] w-[76px] place-items-center rounded-full border font-display text-3xl italic", tone === "dark" ? "border-white/20 bg-navy-deep text-sky" : "border-navy/15 bg-pearl text-brand")}>0{index + 1}</span>
+            <h3 className={cn("mt-6 font-display text-3xl font-medium", tone === "dark" ? "text-white" : "text-navy")}>{title}</h3>
+            <p className={cn("mt-3", tone === "dark" ? "text-white/70" : "text-slate")}>{text}</p>
           </li>
         </FadeIn>
       ))}
@@ -226,14 +198,16 @@ export function Steps({ tone = "light" }: { tone?: "light" | "dark" }) {
 
 export function FaqList({ faqs }: { faqs: Faq[] }) {
   return (
-    <div className="space-y-3">
+    <div className="border-t border-navy/15">
       {faqs.map((faq) => (
-        <details key={faq.id} className="group card overflow-hidden open:shadow-soft">
-          <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-6 py-5 font-display text-lg font-bold text-navy [&::-webkit-details-marker]:hidden">
+        <details key={faq.id} className="group border-b border-navy/15">
+          <summary className="flex cursor-pointer list-none items-center justify-between gap-6 py-6 font-display text-2xl font-medium text-navy transition hover:text-brand md:text-[28px] [&::-webkit-details-marker]:hidden">
             {faq.question}
-            <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-brand-light text-brand transition group-open:rotate-45" aria-hidden>+</span>
+            <span className="relative grid h-10 w-10 shrink-0 place-items-center rounded-full border border-navy/20 transition duration-500 group-open:rotate-[135deg] group-open:border-navy group-open:bg-navy group-open:text-sky" aria-hidden>
+              <span className="absolute h-px w-3.5 bg-current" /><span className="absolute h-3.5 w-px bg-current" />
+            </span>
           </summary>
-          <p className="px-6 pb-6 text-slate">{faq.answer}</p>
+          <p className="max-w-2xl pb-7 pr-12 text-lg text-slate">{faq.answer}</p>
         </details>
       ))}
     </div>
@@ -263,7 +237,7 @@ export function TeamVisual({ photo, className }: { photo: string; className?: st
         <Photo stock={STOCK.dining} alt="Waterfront dining" fill sizes="(max-width: 1024px) 40vw, 20vw" />
       </div>
       <div className="absolute -bottom-5 left-4 flex items-center gap-3 rounded-2xl bg-white p-3 pr-5 shadow-soft sm:left-6">
-        <span className="grid h-11 w-11 place-items-center rounded-xl bg-leaf-soft text-brand"><Sunset className="h-6 w-6" aria-hidden /></span>
+        <span className="grid h-11 w-11 place-items-center rounded-full bg-navy text-sky"><Sunset className="h-6 w-6" aria-hidden /></span>
         <span><span className="block font-display font-semibold text-navy">Locally owned</span><span className="text-sm text-slate">On the Darwin waterfront</span></span>
       </div>
     </div>
@@ -272,24 +246,22 @@ export function TeamVisual({ photo, className }: { photo: string; className?: st
 
 export function CtaBand({ settings }: { settings: Settings }) {
   return (
-    <section className="section">
-      <div className="container-x">
-        <div className="relative isolate overflow-hidden rounded-[32px] p-7 text-white sm:p-10 md:rounded-[40px] md:p-14">
-          <Photo stock={STOCK.sunset} fill sizes="100vw" className="-z-20" />
-          <div className="absolute inset-0 -z-10 bg-gradient-to-r from-navy-deep via-navy-deep/85 to-navy/40" aria-hidden />
-          <Sparkle className="absolute right-10 top-10 hidden h-12 w-12 text-sky md:block" animated />
-          <div className="relative grid gap-8 md:grid-cols-[1.4fr_1fr] md:items-center">
-            <div>
-              <h2 className="font-display text-[34px] font-semibold leading-tight md:text-5xl">Your harbour escape awaits.</h2>
-              <p className="mt-4 max-w-xl text-lg text-white/80">Check live availability and book direct for our best rate, with free breakfast on stays of two nights or more.</p>
-            </div>
-            <div className="flex flex-col gap-3">
-              <Link href="/booking" className="inline-flex min-h-14 items-center justify-center rounded-full bg-leaf px-6 text-lg font-semibold text-navy-deep hover:bg-sun">Check availability</Link>
-              <button type="button" data-open-chat className="inline-flex min-h-14 items-center justify-center rounded-full border border-white/40 px-6 text-lg font-semibold text-white hover:bg-white/10">Ask our concierge</button>
-              <a href={`tel:${settings.phoneTel}`} className="text-center font-semibold text-white/85 hover:text-white">or call {settings.phoneDisplay}</a>
-            </div>
-          </div>
+    <section className="relative isolate overflow-hidden bg-navy-deep py-24 text-white md:py-36">
+      <Photo stock={STOCK.sunset} fill sizes="100vw" className="-z-20 animate-kenburns" />
+      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-navy-deep/80 via-navy-deep/60 to-navy-deep" aria-hidden />
+      <div className="container-x text-center">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.36em] text-sky">Your harbour escape awaits</p>
+        <SplitWords text="Stay with the tide." className="mx-auto mt-6 max-w-4xl font-display text-6xl font-light leading-[0.9] tracking-[-0.04em] md:text-8xl lg:text-[128px]" />
+        <p className="mx-auto mt-8 max-w-xl text-lg text-white/80" data-reveal>Check live availability and book direct for our best rate, with free breakfast on stays of two nights or more.</p>
+        <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+          <Magnetic>
+            <Link href="/booking" data-cursor="Book" className="group inline-flex min-h-14 items-center gap-3 rounded-full bg-sky pl-7 pr-2 font-semibold text-navy-deep transition hover:bg-white">
+              Check availability <span className="grid h-10 w-10 place-items-center rounded-full bg-navy-deep text-sky transition group-hover:rotate-45"><ArrowUpRight className="h-4 w-4" aria-hidden /></span>
+            </Link>
+          </Magnetic>
+          <button type="button" data-open-chat className="inline-flex min-h-14 items-center rounded-full border border-white/30 px-6 font-semibold hover:bg-white/10">Ask our concierge</button>
         </div>
+        <a href={`tel:${settings.phoneTel}`} className="mt-6 inline-block text-sm uppercase tracking-[0.24em] text-white/70 hover:text-white">or call {settings.phoneDisplay}</a>
       </div>
     </section>
   );

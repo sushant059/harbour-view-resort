@@ -22,7 +22,7 @@ export default async function ContactPage() {
   ];
   return (
     <>
-      <PageHero image={STOCK.lobby} eyebrow="Contact" title="We’d love to welcome you." lede="Call, WhatsApp, email or chat with our concierge. To book a room, the booking page shows live availability." crumbs={[{ href: "/contact", label: "Contact" }]} />
+      <PageHero compact image={STOCK.lobby} eyebrow="Contact" title="We’d love to welcome you." lede="Call, WhatsApp, email or chat with our concierge. To book a room, the booking page shows live availability." crumbs={[{ href: "/contact", label: "Contact" }]} />
       <section className="section pt-12">
         <div className="container-x">
           <div className="grid gap-4 md:grid-cols-3">

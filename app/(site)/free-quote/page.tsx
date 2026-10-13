@@ -17,7 +17,7 @@ export default async function EnquirePage({ searchParams }: { searchParams: Prom
   const initial = db.services.some((item) => item.slug === service && item.visible) ? service : "";
   return (
     <>
-      <PageHero image={STOCK.events} eyebrow="Enquiries" title="Plan something special." lede="Weddings, celebrations, group stays, private dining or spa days. Tell us what you have in mind and our team will come back with options." crumbs={[{ href: "/free-quote", label: "Enquire" }]} />
+      <PageHero compact image={STOCK.events} eyebrow="Enquiries" title="Plan something special." lede="Weddings, celebrations, group stays, private dining or spa days. Tell us what you have in mind and our team will come back with options." crumbs={[{ href: "/free-quote", label: "Enquire" }]} />
       <section className="section pt-12">
         <div className="container-x grid gap-10 lg:grid-cols-[1fr_1.4fr]">
           <div className="space-y-4">

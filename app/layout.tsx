@@ -1,20 +1,21 @@
 import type { Metadata, Viewport } from "next";
-import { Jost, Playfair_Display } from "next/font/google";
+import { Cormorant_Garamond, Jost } from "next/font/google";
 import { ToastProvider } from "@/components/ui/toaster";
 import { getDb } from "@/lib/store";
 import { siteUrl } from "@/lib/utils";
 import "./globals.css";
 
-const display = Playfair_Display({
+const display = Cormorant_Garamond({
   subsets: ["latin"],
-  weight: ["500", "600", "700", "800"],
+  weight: ["300", "400", "500", "600", "700"],
+  style: ["normal", "italic"],
   variable: "--font-display",
   display: "swap",
 });
 
 const body = Jost({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["300", "400", "500", "600", "700"],
   variable: "--font-body",
   display: "swap",
 });
@@ -48,7 +49,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en-AU" suppressHydrationWarning>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }} />
+        <script dangerouslySetInnerHTML={{ __html: "(function(){var d=document.documentElement;d.classList.add('js');try{if(sessionStorage.getItem('hvr-intro')||matchMedia('(prefers-reduced-motion: reduce)').matches)d.classList.add('intro-seen')}catch(e){d.classList.add('intro-seen')}})()" }} />
       </head>
       <body className={`${display.variable} ${body.variable} font-sans antialiased`}>
         <ToastProvider>{children}</ToastProvider>

@@ -12,7 +12,7 @@ export default async function PrivacyPage() {
   const { settings } = await getDb();
   return (
     <>
-      <PageHero image={STOCK.pool} eyebrow="Privacy" title="Privacy policy" lede="A plain-language summary for guests. It is not a substitute for legal advice." />
+      <PageHero compact image={STOCK.pool} eyebrow="Privacy" title="Privacy policy" lede="A plain-language summary for guests. It is not a substitute for legal advice." />
       <section className="section pt-12">
         <div className="container-x card max-w-3xl space-y-4 p-6 text-slate md:p-10">
           <p>{settings.businessName} collects your name, phone number, email, where you are travelling from, your stay dates, guest numbers and any requests you send. We use that information to confirm and look after your booking and to reply to you.</p>
