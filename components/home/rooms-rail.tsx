@@ -57,7 +57,7 @@ export function RoomsRail({ rooms }: { rooms: Service[] }) {
   }, [rooms.length]);
 
   const intro = (
-    <div className="flex w-[78vw] shrink-0 flex-col justify-between pr-6 sm:w-[46vw] lg:w-[30vw]">
+    <div className="flex shrink-0 flex-col justify-between lg:w-[30vw] lg:pr-6">
       <div>
         <p className="flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.36em] text-brand"><span className="h-px w-10 bg-brand" /> Stay</p>
         <h2 className="mt-6 font-display text-5xl font-medium leading-[0.95] tracking-[-0.03em] text-navy md:text-7xl">Rooms, suites <em className="font-light text-brand">&amp;</em> villas</h2>
@@ -95,7 +95,11 @@ export function RoomsRail({ rooms }: { rooms: Service[] }) {
       {/* Phones & tablets: swipe */}
       <section className="bg-[#F4EFE6] py-20 lg:hidden">
         <div className="container-x">{intro}</div>
-        <div className="no-scrollbar mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 sm:px-6">
+        <p className="container-x mt-8 flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.3em] text-slate" aria-hidden>
+          Swipe
+          <motion.span className="block h-px w-10 origin-left bg-navy" animate={{ scaleX: [0.3, 1, 0.3] }} transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }} />
+        </p>
+        <div className="no-scrollbar mt-4 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-px-4 px-4 pb-2 sm:px-6">
           {rooms.map((room, index) => (
             <motion.div key={room.id} className="h-[520px] w-[84%] shrink-0 snap-center sm:w-[60%]" initial={{ opacity: 0, x: 60 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.9, delay: index * 0.05, ease: [0.22, 1, 0.36, 1] }}>
               <RoomPanel room={room} index={index} total={rooms.length} />

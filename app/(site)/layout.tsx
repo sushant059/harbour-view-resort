@@ -50,7 +50,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
         <div className="fixed inset-x-0 top-0 z-40">
           <Header settings={db.settings} services={services} />
         </div>
-        <main id="content" className="pb-16 md:pb-0">{children}</main>
+        <main id="content">{children}</main>
         {banner && <OfferBanner id={banner.id} text={banner.bannerText} href={banner.href || "/offers"} settings={db.settings} />}
         <Footer settings={db.settings} services={db.services} />
         <SiteWidgets settings={db.settings} services={services} />

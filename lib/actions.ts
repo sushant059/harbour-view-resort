@@ -475,6 +475,18 @@ const settingsSchema = z.object({
     accountNumber: z.string().trim().max(20).refine((value) => value === "" || /^[\d ]{5,12}$/.test(value), "Account number is 5–10 digits"),
     footer: z.string().trim().max(300),
   }),
+  dayMoments: z
+    .array(
+      z.object({
+        time: z.string().trim().min(1, "Each moment needs a time, e.g. 06:30").max(12),
+        title: z.string().trim().min(1, "Each moment needs a title").max(60),
+        text: z.string().trim().max(220),
+        image: z.string().trim().max(500),
+        href: z.string().trim().max(200),
+      }),
+    )
+    .min(1, "Keep at least one moment of the day")
+    .max(8),
 });
 
 export async function saveSettingsAction(input: Settings): Promise<ActionResult> {
@@ -786,6 +798,10 @@ function assignSlot(db: { settings: Settings; services: Service[]; media: { slot
   if (slot === "hero-video") db.settings.heroVideo = url;
   if (slot === "team-photo") db.settings.teamPhoto = url;
   if (slot === "og-image") db.settings.ogImage = url;
+  if (slot.startsWith("day-moment:")) {
+    const moment = db.settings.dayMoments[Number(slot.slice("day-moment:".length))];
+    if (moment) moment.image = url;
+  }
   if (slot.startsWith("service-video:")) {
     const service = db.services.find((item) => item.slug === slot.slice("service-video:".length));
     if (service) service.videoUrl = url;

@@ -8,7 +8,8 @@ import { Photo } from "@/components/photo";
 import { wavePath as wave } from "@/components/motion/svg";
 import type { StockImage } from "@/lib/stock";
 
-export type DayMoment = { time: string; title: string; text: string; image: StockImage[]; href: string };
+/** A moment of the day: `src` is the resort's own photo (uploaded in Admin), `stock` the fallback. */
+export type SceneMoment = { time: string; title: string; text: string; src: string; stock: StockImage[]; href: string };
 
 // Sky colours at each point of the day: top of the sky, horizon glow, water.
 const STOPS = [0, 0.18, 0.4, 0.6, 0.78, 1];
@@ -24,7 +25,7 @@ const LAND = ["#1E2A3C", "#2E4B5E", "#2B4A5C", "#34465A", "#1A1424", "#04080D"];
  * sets in orange behind the city, and the stars come out — while the moments of the day
  * (breakfast, the pool, the spa, sunset drinks, dinner) change alongside.
  */
-export function DayCycle({ moments }: { moments: DayMoment[] }) {
+export function DayCycle({ moments }: { moments: SceneMoment[] }) {
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
   const p = useSpring(scrollYProgress, { stiffness: 90, damping: 26, mass: 0.5 });
@@ -79,6 +80,17 @@ export function DayCycle({ moments }: { moments: DayMoment[] }) {
   const moonReflectionX = useTransform(moonX, (value) => value - 20);
 
   const moment = moments[stage];
+  // Scroll to the middle of a moment's stretch of the section.
+  function jump(index: number) {
+    const section = ref.current;
+    if (!section) return;
+    const top = section.getBoundingClientRect().top + window.scrollY;
+    const travel = section.offsetHeight - window.innerHeight;
+    const target = top + travel * ((index + 0.5) / moments.length);
+    const lenis = (window as Window & { __lenis?: { scrollTo: (y: number, o?: object) => void } }).__lenis;
+    if (lenis) lenis.scrollTo(target, { duration: 1.4 });
+    else window.scrollTo({ top: target, behavior: "smooth" });
+  }
   return (
     <section ref={ref} className="relative bg-navy-deep" style={{ height: `${moments.length * 85 + 40}vh` }} aria-label="A day at Harbour View">
       <div ref={box} className="sticky top-0 h-screen overflow-hidden">
@@ -193,44 +205,58 @@ export function DayCycle({ moments }: { moments: DayMoment[] }) {
         </svg>
 
         {/* Soft vignette so the words read on any sky */}
-        <div className="absolute inset-0 bg-gradient-to-r from-navy-deep/70 via-navy-deep/10 to-transparent" aria-hidden />
+        <div className="absolute inset-0 bg-gradient-to-r from-navy-deep/75 via-navy-deep/15 to-transparent" aria-hidden />
+        <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-navy-deep/80 to-transparent lg:hidden" aria-hidden />
 
-        <div className="container-x relative flex h-full flex-col justify-between py-24 text-white md:py-28">
+        <div className="container-x relative flex h-full flex-col pb-[88px] pt-20 text-white md:pb-10 md:pt-24 lg:pt-28">
           <div className="flex items-start justify-between gap-6">
             <div>
-              <p className="flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.36em] text-sky"><span className="h-px w-10 bg-sky" /> A day at Harbour View</p>
-              <div className="relative mt-4 h-[96px] overflow-hidden md:h-[160px]">
+              <p className="flex items-center gap-3 text-[10px] font-semibold uppercase tracking-[0.36em] text-sky md:text-[11px]"><span className="h-px w-8 bg-sky md:w-10" /> A day at Harbour View</p>
+              <div className="relative mt-2 h-[72px] overflow-hidden md:mt-4 md:h-[150px]">
                 <AnimatePresence mode="popLayout" initial={false}>
-                  <motion.p key={moment.time} className="font-display text-[88px] font-light leading-none tracking-[-0.04em] tabular-nums md:text-[150px]" initial={{ y: "100%", opacity: 0 }} animate={{ y: "0%", opacity: 1 }} exit={{ y: "-100%", opacity: 0 }} transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}>
+                  <motion.p key={moment.time} className="font-display text-[68px] font-light leading-none tracking-[-0.04em] tabular-nums md:text-[140px]" initial={{ y: "100%", opacity: 0 }} animate={{ y: "0%", opacity: 1 }} exit={{ y: "-100%", opacity: 0 }} transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}>
                     {moment.time}
                   </motion.p>
                 </AnimatePresence>
               </div>
             </div>
-            <ol className="mt-2 hidden flex-col gap-3 md:flex" aria-label="Moments of the day">
-              {moments.map((item, index) => (
-                <li key={item.time} className="flex items-center justify-end gap-3 text-xs uppercase tracking-[0.24em]">
-                  <span className={index === stage ? "text-white" : "text-white/40"}>{item.time}</span>
-                  <motion.span className="block h-px bg-sky" animate={{ width: index === stage ? 48 : 14, opacity: index === stage ? 1 : 0.4 }} />
-                </li>
-              ))}
-            </ol>
           </div>
 
-          <AnimatePresence mode="wait" initial={false}>
-            <motion.div key={moment.title} className="grid max-w-3xl gap-5 rounded-[26px] bg-navy-deep/45 p-4 ring-1 ring-white/15 backdrop-blur-md sm:grid-cols-[180px_1fr] sm:p-5" initial={{ opacity: 0, y: 40, filter: "blur(8px)" }} animate={{ opacity: 1, y: 0, filter: "blur(0px)" }} exit={{ opacity: 0, y: -30, filter: "blur(8px)" }} transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}>
-              <div className="relative hidden aspect-square overflow-hidden rounded-[18px] sm:block">
-                <Photo stock={moment.image} alt={moment.title} fill sizes="180px" className="animate-kenburns" />
-              </div>
-              <div className="flex flex-col justify-center">
-                <h3 className="font-display text-3xl font-medium md:text-4xl">{moment.title}</h3>
-                <p className="mt-2 text-white/80">{moment.text}</p>
-                <Link href={moment.href} className="group mt-4 inline-flex items-center gap-2 self-start text-sm font-semibold text-sky">
+          <div className="mt-auto grid items-end gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.85fr)] lg:gap-12">
+            {/* Words */}
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.div key={moment.title} className="order-2 rounded-[22px] bg-navy-deep/55 p-4 ring-1 ring-white/15 backdrop-blur-md md:p-6 lg:order-1 lg:max-w-xl" initial={{ opacity: 0, y: 30, filter: "blur(8px)" }} animate={{ opacity: 1, y: 0, filter: "blur(0px)" }} exit={{ opacity: 0, y: -20, filter: "blur(8px)" }} transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}>
+                <h3 className="font-display text-[28px] font-medium leading-tight md:text-4xl">{moment.title}</h3>
+                <p className="mt-2 text-[15px] text-white/80 md:text-base">{moment.text}</p>
+                <Link href={moment.href || "/booking"} className="group mt-3 inline-flex items-center gap-2 text-sm font-semibold text-sky">
                   Discover <ArrowUpRight className="h-4 w-4 transition group-hover:rotate-45" aria-hidden />
                 </Link>
-              </div>
-            </motion.div>
-          </AnimatePresence>
+              </motion.div>
+            </AnimatePresence>
+
+            {/* The real photo of this moment, in a frame that wipes to the next one */}
+            <div className="relative order-1 aspect-[16/9] w-full overflow-hidden rounded-[22px] shadow-soft ring-1 ring-white/20 [@media(max-height:640px)]:hidden lg:order-2 lg:aspect-[5/4] lg:w-full lg:max-w-[min(460px,62vh)] lg:justify-self-end lg:rounded-[28px]">
+              <AnimatePresence initial={false}>
+                <motion.div key={stage} className="absolute inset-0" initial={{ clipPath: "inset(100% 0% 0% 0%)", scale: 1.15 }} animate={{ clipPath: "inset(0% 0% 0% 0%)", scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.9, ease: [0.76, 0, 0.24, 1] }}>
+                  <Photo src={moment.src} stock={moment.stock} alt={moment.title} fill sizes="(max-width: 1024px) 92vw, 34vw" className="animate-kenburns" />
+                </motion.div>
+              </AnimatePresence>
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-navy-deep/50 via-transparent to-transparent" aria-hidden />
+              <span className="absolute bottom-3 left-3 rounded-full bg-navy-deep/60 px-3 py-1 font-display text-sm italic text-white backdrop-blur">{moment.time} · {String(stage + 1).padStart(2, "0")}/{String(moments.length).padStart(2, "0")}</span>
+            </div>
+          </div>
+
+          {/* Filmstrip: every moment's photo; tap one to jump there */}
+          <ol className="no-scrollbar -mx-4 mt-3 flex gap-2 overflow-x-auto px-4 md:mx-0 md:mt-5 md:gap-3 md:px-0 lg:absolute lg:right-8 lg:top-28 lg:mt-0 lg:flex-col lg:items-end [@media(max-height:700px)]:hidden" aria-label="Moments of the day">
+            {moments.map((item, index) => (
+              <li key={`${item.time}-${index}`} className="shrink-0">
+                <button type="button" onClick={() => jump(index)} aria-current={index === stage ? "step" : undefined} aria-label={`${item.time} ${item.title}`} className="group flex items-center gap-2 rounded-full bg-navy-deep/40 p-1 pr-3 ring-1 ring-white/10 backdrop-blur transition hover:bg-navy-deep/70 aria-[current=step]:bg-sky aria-[current=step]:text-navy-deep">
+                  <span className="relative h-8 w-8 overflow-hidden rounded-full md:h-10 md:w-10"><Photo src={item.src} stock={item.stock} fill sizes="40px" /></span>
+                  <span className="text-xs font-semibold tabular-nums tracking-wide">{item.time}</span>
+                </button>
+              </li>
+            ))}
+          </ol>
         </div>
       </div>
     </section>

@@ -47,11 +47,11 @@ export function OfferBanner({ id, text, href }: { id: string; text: string; href
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           aria-label="Current offer"
         >
-          <div className="flex items-start gap-3 rounded-[20px] border border-white/10 bg-navy-deep/90 p-4 pr-3 text-white shadow-soft backdrop-blur-xl">
-            <span className="mt-1 grid h-9 w-9 shrink-0 place-items-center rounded-full bg-sky/15 font-display text-lg italic text-sky">%</span>
+          <div className="flex items-center gap-3 rounded-[18px] border border-white/10 bg-navy-deep/90 p-3 pr-2 text-white shadow-soft backdrop-blur-xl md:items-start md:rounded-[20px] md:p-4 md:pr-3">
+            <span className="mt-1 hidden h-9 w-9 shrink-0 place-items-center rounded-full bg-sky/15 font-display text-lg italic text-sky md:grid">%</span>
             <div className="min-w-0 flex-1">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-sky">Book direct</p>
-              <Link href={href || "/offers"} onClick={() => setVisible(false)} className="group mt-1 block font-display text-lg leading-snug hover:text-sky">
+              <p className="hidden text-[10px] font-semibold uppercase tracking-[0.3em] text-sky md:block">Book direct</p>
+              <Link href={href || "/offers"} onClick={() => setVisible(false)} className="group block font-display text-base leading-snug hover:text-sky md:mt-1 md:text-lg">
                 {text} <ArrowUpRight className="inline h-4 w-4 transition group-hover:rotate-45" aria-hidden />
               </Link>
             </div>

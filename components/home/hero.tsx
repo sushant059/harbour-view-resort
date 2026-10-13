@@ -37,7 +37,7 @@ export function CinematicHero({ headline, subtext, heroImage, heroIsPhoto, clip,
 
       <motion.div style={{ y: textY, opacity: fade }} className="container-x relative flex min-h-[100svh] flex-col justify-end pb-8 pt-36 md:pb-10">
         <motion.div className="mb-6 flex flex-wrap items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.36em] text-sky" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.35, ease: EASE }}>
-          <span className="h-px w-10 bg-sky" /> Darwin Waterfront · Northern Territory
+          <span className="h-px w-10 bg-sky" /> Darwin Waterfront<span className="hidden sm:inline"> · Northern Territory</span>
         </motion.div>
 
         <h1 className="max-w-6xl font-display text-[54px] font-medium leading-[0.92] tracking-[-0.03em] sm:text-[84px] lg:text-[108px] xl:text-[120px]">

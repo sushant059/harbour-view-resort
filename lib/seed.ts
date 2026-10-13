@@ -1,4 +1,14 @@
-import type { Database, Service } from "@/lib/types";
+import type { Database, DayMoment, Service } from "@/lib/types";
+
+/** The homepage's "day at Harbour View". Photos start empty (stock photos show) until the owner uploads real ones. */
+export const DEFAULT_DAY_MOMENTS: DayMoment[] = [
+  { time: "06:30", title: "First light on the harbour", text: "Sunrise yoga on the lawn, or a slow coffee on your balcony as the boats head out.", image: "", href: "/services/harbour-king" },
+  { time: "08:30", title: "Breakfast, slowly", text: "Tropical fruit, bush-tomato eggs and barista coffee: free on stays of two nights or more.", image: "", href: "/offers" },
+  { time: "12:00", title: "The lagoon pool", text: "Palms, cabanas and cocktails delivered to your sun lounger. The kids have their own shallow end.", image: "", href: "/why-us" },
+  { time: "15:00", title: "Mangrove Day Spa", text: "Kakadu plum facials and lemon myrtle massages while the afternoon heat passes.", image: "", href: "/services/day-spa" },
+  { time: "18:45", title: "Golden hour on the deck", text: "The harbour turns orange. Find a seat on the Saltwater deck with a gin made in Darwin.", image: "", href: "/services/saltwater-restaurant" },
+  { time: "20:30", title: "Dinner under the stars", text: "Barramundi off the boats and mud crab with chilli, then a night swim in your villa pool.", image: "", href: "/services/saltwater-restaurant" },
+];
 
 const AREAS = ["Darwin City", "Darwin Waterfront", "Larrakeyah", "Stuart Park", "Fannie Bay", "Parap", "Cullen Bay", "Palmerston"];
 
@@ -157,6 +167,7 @@ export function seedDatabase(): Database {
         accountNumber: "",
         footer: "Thank you for staying with Harbour View Resort Darwin.",
       },
+      dayMoments: DEFAULT_DAY_MOMENTS.map((moment) => ({ ...moment })),
     },
     services,
     offers: [

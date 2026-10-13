@@ -145,10 +145,20 @@ export function BookingForm({ services, settings, initialService = "", initial =
 
   return (
     <form className="rounded-card bg-white p-4 shadow-card sm:p-6 md:p-8" onSubmit={form.handleSubmit(onSubmit)} noValidate>
-      <ol className="mb-6 grid grid-cols-4 gap-1.5" aria-label="Booking progress">
+      {/* Phones: "Step 1 of 4" with a thin progress bar. Larger screens: all four steps as pills. */}
+      <div className="mb-6 sm:hidden" aria-hidden>
+        <p className="flex items-baseline justify-between text-xs font-semibold uppercase tracking-[0.2em] text-slate">
+          <span>Step {step + 1} of {STEPS.length}</span>
+          <span className="font-display text-lg normal-case tracking-normal text-navy">{STEPS[step]}</span>
+        </p>
+        <div className="mt-2 grid grid-cols-4 gap-1">
+          {STEPS.map((label, index) => <span key={label} className={cn("h-1 rounded-full", index <= step ? "bg-navy" : "bg-line")} />)}
+        </div>
+      </div>
+      <ol className="mb-6 hidden grid-cols-4 gap-1.5 sm:grid" aria-label="Booking progress">
         {STEPS.map((label, index) => (
-          <li key={label} className={cn("rounded-full px-2 py-1.5 text-center text-xs font-semibold sm:text-sm", index === step ? "bg-navy text-white" : index < step ? "bg-sun text-navy" : "bg-mist text-slate")}>
-            <span className="hidden sm:inline">{index + 1}. </span>{label}
+          <li key={label} aria-current={index === step ? "step" : undefined} className={cn("rounded-full px-2 py-1.5 text-center text-sm font-semibold", index === step ? "bg-navy text-white" : index < step ? "bg-sun text-navy" : "bg-mist text-slate")}>
+            {index + 1}. {label}
           </li>
         ))}
       </ol>

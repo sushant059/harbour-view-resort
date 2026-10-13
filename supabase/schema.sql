@@ -213,6 +213,7 @@ alter table public.reviews add column if not exists email text not null default 
 alter table public.reviews add column if not exists suburb text not null default '';
 alter table public.bookings add column if not exists promo_code text not null default '';
 alter table public.site_settings add column if not exists slot_capacity int not null default 1;
+alter table public.site_settings add column if not exists day_moments jsonb not null default '[]'::jsonb;
 alter table public.bookings add column if not exists promo_message text not null default '';
 alter table public.reviews drop constraint if exists reviews_source_check;
 alter table public.reviews add constraint reviews_source_check check (source in ('sample', 'manual', 'google', 'customer'));

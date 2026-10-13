@@ -54,7 +54,7 @@ export function PageHero({ eyebrow, title, lede, children, crumbs, image = STOCK
         <motion.p className="flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.36em] text-sky" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5, duration: 0.9, ease: EASE }}>
           <span className="h-px w-10 bg-sky" /> {eyebrow}
         </motion.p>
-        <SplitWords as="h1" text={title} delay={0.55} stagger={0.07} className={cn("mt-6 max-w-5xl font-display font-light leading-[0.95] tracking-[-0.03em]", compact ? "text-[44px] sm:text-6xl lg:text-[84px]" : "text-[48px] sm:text-7xl lg:text-[104px]")} />
+        <SplitWords as="h1" text={title} delay={0.55} stagger={0.07} className={cn("mt-6 max-w-5xl font-display font-light tracking-[-0.03em]", compact ? "text-[44px] sm:text-6xl lg:text-[84px]" : "text-[48px] sm:text-7xl lg:text-[104px]", "leading-[0.98]")} />
         <motion.p className="mt-7 max-w-2xl text-lg font-light text-white/80 md:text-xl" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1, duration: 1, ease: EASE }}>{lede}</motion.p>
         {children && <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.15, duration: 1, ease: EASE }}>{children}</motion.div>}
       </motion.div>

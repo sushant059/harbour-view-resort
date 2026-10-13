@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { BadgePercent, Menu, Receipt, X, CalendarDays, ExternalLink, Images, Inbox, LayoutDashboard, ListChecks, LogOut, MessageSquareQuote, Send, Settings, SquareStack, Users } from "lucide-react";
+import { BadgePercent, Menu, Receipt, Sunrise, X, CalendarDays, ExternalLink, Images, Inbox, LayoutDashboard, ListChecks, LogOut, MessageSquareQuote, Send, Settings, SquareStack, Users } from "lucide-react";
 import { Logo } from "@/components/brand";
 import { logoutAction } from "@/lib/actions";
 import { cn } from "@/lib/utils";
@@ -18,6 +18,7 @@ const LINKS = [
   ["/admin/reviews", "Reviews", MessageSquareQuote],
   ["/admin/services", "Rooms & experiences", SquareStack],
   ["/admin/media", "Gallery & media", Images],
+  ["/admin/day", "A day at the resort", Sunrise],
   ["/admin/offers", "Offers & promos", BadgePercent],
   ["/admin/faqs", "FAQs", ListChecks],
   ["/admin/settings", "Settings", Settings],

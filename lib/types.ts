@@ -68,7 +68,12 @@ export type Settings = {
   /** How many jobs can share one time slot (number of crews). */
   slotCapacity: number;
   invoice: InvoiceSettings;
+  /** "A day at Harbour View" on the homepage: one moment per time of day, each with its own photo. */
+  dayMoments: DayMoment[];
 };
+
+/** A moment in the day (06:30 sunrise, 12:00 the pool…). An empty image shows a stock photo until a real one is uploaded. */
+export type DayMoment = { time: string; title: string; text: string; image: string; href: string };
 
 export type InvoiceSettings = {
   /** Registered for GST: invoices say "Tax invoice" and show the GST included (1/11 of the total). */

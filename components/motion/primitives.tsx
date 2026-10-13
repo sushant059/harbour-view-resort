@@ -13,14 +13,16 @@ export function SplitWords({ text, className, delay = 0, as = "h2", stagger = 0.
   return (
     <Tag className={className} initial="hidden" whileInView="show" viewport={{ once, margin: "0px 0px -10% 0px" }} aria-label={text}>
       {words.map((word, index) => (
-        <span key={`${word}-${index}`} className="inline-flex overflow-hidden pb-[0.12em] align-bottom" aria-hidden>
-          <motion.span
-            className="inline-block will-change-transform"
-            variants={{ hidden: { y: "110%", rotate: 4 }, show: { y: "0%", rotate: 0, transition: { duration: 1, ease: EASE, delay: delay + index * stagger } } }}
-          >
-            {word}
-          </motion.span>
-          {index < words.length - 1 && <span>&nbsp;</span>}
+        <span key={`${word}-${index}`} aria-hidden>
+          <span className="-mb-[0.14em] inline-block overflow-hidden pb-[0.14em] align-top">
+            <motion.span
+              className="inline-block will-change-transform"
+              variants={{ hidden: { y: "110%", rotate: 4 }, show: { y: "0%", rotate: 0, transition: { duration: 1, ease: EASE, delay: delay + index * stagger } } }}
+            >
+              {word}
+            </motion.span>
+          </span>
+          {index < words.length - 1 && " "}
         </span>
       ))}
     </Tag>
@@ -32,17 +34,19 @@ export function SplitChars({ text, className, delay = 0 }: { text: string; class
   let position = 0;
   return (
     <span className={className} aria-label={text}>
-      {text.split(" ").map((word, w) => (
-        <span key={w} className="inline-flex overflow-hidden pb-[0.1em] align-bottom" aria-hidden>
-          {[...word].map((char) => {
-            const i = position++;
-            return (
-              <motion.span key={i} className="inline-block" initial={{ y: "115%", opacity: 0 }} animate={{ y: "0%", opacity: 1 }} transition={{ duration: 1.1, ease: EASE, delay: delay + i * 0.028 }}>
-                {char}
-              </motion.span>
-            );
-          })}
-          <span>&nbsp;</span>
+      {text.split(" ").map((word, w, all) => (
+        <span key={w} aria-hidden>
+          <span className="-mb-[0.12em] inline-block overflow-hidden pb-[0.12em] align-top">
+            {[...word].map((char) => {
+              const i = position++;
+              return (
+                <motion.span key={i} className="inline-block" initial={{ y: "115%", opacity: 0 }} animate={{ y: "0%", opacity: 1 }} transition={{ duration: 1.1, ease: EASE, delay: delay + i * 0.028 }}>
+                  {char}
+                </motion.span>
+              );
+            })}
+          </span>
+          {w < all.length - 1 && " "}
         </span>
       ))}
     </span>

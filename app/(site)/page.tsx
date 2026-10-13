@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { FaqList } from "@/components/content";
-import { DayCycle, type DayMoment } from "@/components/home/day-cycle";
+import { DayCycle } from "@/components/home/day-cycle";
 import { ExperienceList } from "@/components/home/experiences";
 import { ExpandingFilm } from "@/components/home/film";
 import { Finale } from "@/components/home/finale";
@@ -21,14 +21,8 @@ import { getDb } from "@/lib/store";
 import { byOrder, darwinISODate, filled, safeHttpUrl } from "@/lib/utils";
 import { isOfferLive } from "@/lib/validators";
 
-const MOMENTS: DayMoment[] = [
-  { time: "06:30", title: "First light on the harbour", text: "Sunrise yoga on the lawn, or a slow coffee on your balcony as the boats head out.", image: STOCK.room, href: "/services/harbour-king" },
-  { time: "08:30", title: "Breakfast, slowly", text: "Tropical fruit, bush-tomato eggs and barista coffee: free on stays of two nights or more.", image: STOCK.breakfast, href: "/offers" },
-  { time: "12:00", title: "The lagoon pool", text: "Palms, cabanas and cocktails delivered to your sun lounger. The kids have their own shallow end.", image: STOCK.pool, href: "/why-us" },
-  { time: "15:00", title: "Mangrove Day Spa", text: "Kakadu plum facials and lemon myrtle massages while the afternoon heat passes.", image: STOCK.spa, href: "/services/day-spa" },
-  { time: "18:45", title: "Golden hour on the deck", text: "The harbour turns orange. Find a seat on the Saltwater deck with a gin made in Darwin.", image: STOCK.sunset, href: "/services/saltwater-restaurant" },
-  { time: "20:30", title: "Dinner under the stars", text: "Barramundi off the boats and mud crab with chilli, then a night swim in your villa pool.", image: STOCK.dining, href: "/services/saltwater-restaurant" },
-];
+// Stock photos for each moment of the day, until the owner uploads real ones in Admin → A day at the resort.
+const MOMENT_STOCK = [STOCK.room, STOCK.breakfast, STOCK.pool, STOCK.spa, STOCK.sunset, STOCK.dining, STOCK.villa, STOCK.lobby];
 
 export default async function HomePage() {
   const db = await getDb();
@@ -76,7 +70,7 @@ export default async function HomePage() {
 
       <ExpandingFilm clip={STOCK_CLIPS[1]} eyebrow="Take a look" left="Slow" right="down" caption="Every room faces the water or the gardens. Every evening ends in gold." />
 
-      <DayCycle moments={MOMENTS} />
+      <DayCycle moments={s.dayMoments.map((moment, index) => ({ time: moment.time, title: moment.title, text: moment.text, href: moment.href, src: moment.image, stock: MOMENT_STOCK[index % MOMENT_STOCK.length] }))} />
 
       <ExperienceList items={experiences} />
 

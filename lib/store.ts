@@ -108,6 +108,8 @@ export function normalizeDb(db: Database): Database {
   db.campaigns = Array.isArray(db.campaigns) ? db.campaigns : [];
   db.invoices = Array.isArray(db.invoices) ? db.invoices : [];
   db.settings.invoice = { ...fresh.settings.invoice, ...(db.settings.invoice ?? {}) };
+  const moments = Array.isArray(db.settings.dayMoments) && db.settings.dayMoments.length ? db.settings.dayMoments : fresh.settings.dayMoments;
+  db.settings.dayMoments = moments.slice(0, 8).map((moment, index) => ({ ...(fresh.settings.dayMoments[index] ?? fresh.settings.dayMoments[0]), ...moment, image: moment.image ?? "" }));
   db.bookings = db.bookings.map((booking) => ({ ...booking, promoCode: booking.promoCode ?? "", promoMessage: booking.promoMessage ?? "", checkOut: booking.checkOut ?? "", room: booking.room ?? "", guests: Number(booking.guests) || 0 }));
   db.reviews = db.reviews.map((review) => {
     const legacy = review as Review & { visible?: boolean };
@@ -156,6 +158,7 @@ function mapSettings(row: Record<string, unknown>): Settings {
     stats: asArray(row.stats),
     slotCapacity: Math.max(1, Number(row.slot_capacity ?? 1) || 1),
     invoice: (row.invoice_settings && typeof row.invoice_settings === "object" ? row.invoice_settings : {}) as Settings["invoice"],
+    dayMoments: asArray(row.day_moments),
   };
 }
 
@@ -191,6 +194,7 @@ function settingsRow(settings: Settings) {
     stats: settings.stats,
     slot_capacity: settings.slotCapacity,
     invoice_settings: settings.invoice,
+    day_moments: settings.dayMoments,
   };
 }
 

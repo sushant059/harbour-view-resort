@@ -11,7 +11,7 @@ import { byOrder, filled } from "@/lib/utils";
 export function Footer({ settings, services }: { settings: Settings; services: Service[] }) {
   const visible = byOrder(services).filter((service) => service.visible);
   return (
-    <footer className="relative overflow-hidden bg-navy-deep text-white">
+    <footer className="relative overflow-hidden bg-navy-deep pb-16 text-white md:pb-0">
       {/* A moving tide line along the top edge */}
       <svg viewBox="0 0 1440 40" preserveAspectRatio="none" className="block h-8 w-full text-sky/40" aria-hidden>
         <g className="animate-wave-slow" stroke="currentColor" fill="none" strokeWidth="1"><path d={wavePath(20, 80, 10)} /></g>
